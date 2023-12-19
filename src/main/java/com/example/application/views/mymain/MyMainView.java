@@ -4,15 +4,12 @@ import com.example.application.views.MainLayout;
 import com.example.application.views.game.GameView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-//@Route
 @Route(value = "", layout = MainLayout.class)
 @PageTitle("Tic Tac Toe")
 public class MyMainView extends VerticalLayout {
