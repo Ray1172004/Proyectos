@@ -7,7 +7,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Hr;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -54,7 +53,6 @@ public class GameView extends VerticalLayout implements HasUrlParameter<String> 
             gridLayout.add(buttonRow);
         }
 
-        add(new Hr());
         add(createBackButton());
         add(gridLayout);
         add(winnerTextField);
@@ -64,25 +62,6 @@ public class GameView extends VerticalLayout implements HasUrlParameter<String> 
         add(createResetWinsButton());
     }
 
-
-
-    private VerticalLayout createGridSection(int start, int end) {
-        VerticalLayout section = new VerticalLayout();
-        section.setAlignItems(Alignment.CENTER);
-        section.setWidth("min-content");
-
-        for (int i = start; i < end; i++) {
-            HorizontalLayout buttonRow = new HorizontalLayout();
-            for (int j = 0; j < 3; j++) {
-                Button cellButton = createCellButton(i, j);
-                cellButtons[i][j] = cellButton;
-                buttonRow.add(cellButton);
-            }
-            section.add(buttonRow);
-        }
-
-        return section;
-    }
 
 
 
@@ -96,8 +75,8 @@ public class GameView extends VerticalLayout implements HasUrlParameter<String> 
     private void resetWins() {
         winsPlayerX = 0;
         winsPlayerO = 0;
-        winsXTextField.setValue("Victorias X: 0");
-        winsOTextField.setValue("Victorias O: 0");
+        winsXTextField.setValue("");
+        winsOTextField.setValue("");
     }
 
     private Button createCellButton(int row, int col) {

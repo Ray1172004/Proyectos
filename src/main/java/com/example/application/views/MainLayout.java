@@ -51,8 +51,8 @@ public class MainLayout extends AppLayout {
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
 
-        nav.addItem(new SideNavItem("My Main", MyMainView.class, LineAwesomeIcon.AIRBNB.create()));
-        nav.addItem(new SideNavItem("Game", GameView.class, LineAwesomeIcon.ANDROID.create()));
+        nav.addItem(new SideNavItem("Elegir ficha", MyMainView.class, LineAwesomeIcon.AIRBNB.create()));
+        nav.addItem(new SideNavItem("Tres en raya", GameView.class, LineAwesomeIcon.ANDROID.create()));
 
         return nav;
     }
