@@ -2,6 +2,7 @@ package com.example.application.views.game;
 
 import com.example.application.TicTacToeGame;
 import com.example.application.views.MainLayout;
+import com.example.application.views.mymain.MyMainView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -10,19 +11,29 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
+import com.vaadin.flow.router.*;
 
 @PageTitle("Game")
-@Route(value = "Game", layout = MainLayout.class)
-public class GameView extends VerticalLayout {
+@Route(value = "game", layout = MainLayout.class)
+public class GameView extends VerticalLayout implements HasUrlParameter<String> {
 
     private final TicTacToeGame ticTacToeGame = new TicTacToeGame();
     private Button[][] cellButtons = new Button[3][3];
     private TextField winnerTextField = new TextField("Ganador:");
 
-    public GameView() {
+    private int winsPlayerX = 0;
+    private int winsPlayerO = 0;
+
+    private TextField winsXTextField = new TextField("");
+    private TextField winsOTextField = new TextField("");
+
+
+    @Override
+    public void setParameter(BeforeEvent event, @OptionalParameter String initialPlayerSymbol) {
+        if (initialPlayerSymbol != null && (initialPlayerSymbol.equals("X") || initialPlayerSymbol.equals("O"))) {
+            ticTacToeGame.setInitialPlayerSymbol(initialPlayerSymbol);
+        }
+
         initializeGrid();
         setupLayout();
     }
@@ -44,8 +55,13 @@ public class GameView extends VerticalLayout {
         }
 
         add(new Hr());
+        add(createBackButton());
         add(gridLayout);
         add(winnerTextField);
+        add(new Hr());
+        add(winsXTextField);
+        add(winsOTextField);
+        add(createResetWinsButton());
     }
 
 
@@ -69,6 +85,20 @@ public class GameView extends VerticalLayout {
     }
 
 
+
+    private Button createResetWinsButton() {
+        Button resetWinsButton = new Button("Reiniciar Victorias");
+        resetWinsButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        resetWinsButton.addClickListener(e -> resetWins());
+        return resetWinsButton;
+    }
+
+    private void resetWins() {
+        winsPlayerX = 0;
+        winsPlayerO = 0;
+        winsXTextField.setValue("Victorias X: 0");
+        winsOTextField.setValue("Victorias O: 0");
+    }
 
     private Button createCellButton(int row, int col) {
         Button button = new Button();
@@ -97,8 +127,9 @@ public class GameView extends VerticalLayout {
         clickedButton.setText(currentPlayerSymbol);
 
         if (ticTacToeGame.isGameWon()) {
-            showWinner(currentPlayerSymbol);
-            // Puedes reiniciar el juego o realizar otras acciones después de que alguien gane.
+            String winnerSymbol = ticTacToeGame.getCurrentPlayerSymbol();
+            showWinner(winnerSymbol);
+            updateWinsCounter(winnerSymbol);
             return;
         }
 
@@ -119,6 +150,16 @@ public class GameView extends VerticalLayout {
 
         // Deshabilita todos los botones después de que alguien gane
         disableCellButtons();
+    }
+
+    private void updateWinsCounter(String winnerSymbol) {
+        if (winnerSymbol.equals("X")) {
+            winsPlayerX++;
+            winsXTextField.setValue("Victorias X: " + winsPlayerX);
+        } else if (winnerSymbol.equals("O")) {
+            winsPlayerO++;
+            winsOTextField.setValue("Victorias O: " + winsPlayerO);
+        }
     }
 
     private void showTie() {
@@ -183,6 +224,12 @@ public class GameView extends VerticalLayout {
 
         // Limpiar el TextField
         winnerTextField.setValue("");
+    }
+
+    private Button createBackButton() {
+        Button backButton = new Button("Regresar a escoger jugador");
+        backButton.addClickListener(e -> getUI().ifPresent(ui -> ui.navigate(MyMainView.class)));
+        return backButton;
     }
 
 }

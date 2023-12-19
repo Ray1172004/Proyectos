@@ -10,10 +10,18 @@ public class TicTacToeGame {
             {EMPTY_CELL, EMPTY_CELL, EMPTY_CELL}
     };
 
+    // Nueva variable para almacenar el símbolo del jugador inicial
+    private String initialPlayerSymbol;
+
     public String getCurrentPlayerSymbol() {
         return currentPlayer;
     }
 
+    // Nuevo método para establecer el símbolo del jugador inicial
+    public void setInitialPlayerSymbol(String symbol) {
+        initialPlayerSymbol = symbol;
+        currentPlayer = symbol;  // Establece el primer jugador como el jugador inicial
+    }
 
     public void makeMove(int row, int col) {
         // Verificar si la celda está vacía
@@ -57,7 +65,6 @@ public class TicTacToeGame {
         return (!c1.equals(EMPTY_CELL) && c1.equals(c2) && c1.equals(c3));
     }
 
-
     public boolean isGameTie() {
         // Verificar si todas las celdas están ocupadas
         for (int row = 0; row < 3; row++) {
@@ -85,9 +92,7 @@ public class TicTacToeGame {
             }
         }
 
-        // Reinicia el símbolo del jugador actual
-        currentPlayer = "X"; // o "O" según prefieras
+        // Reinicia el símbolo del jugador actual al símbolo del jugador inicial
+        currentPlayer = initialPlayerSymbol;
     }
-
-
 }

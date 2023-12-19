@@ -1,6 +1,5 @@
 package com.example.application.views;
 
-import com.example.application.views.estadisticas.EstadisticasView;
 import com.example.application.views.game.GameView;
 import com.example.application.views.mymain.MyMainView;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -54,8 +53,6 @@ public class MainLayout extends AppLayout {
 
         nav.addItem(new SideNavItem("My Main", MyMainView.class, LineAwesomeIcon.AIRBNB.create()));
         nav.addItem(new SideNavItem("Game", GameView.class, LineAwesomeIcon.ANDROID.create()));
-        nav.addItem(
-                new SideNavItem("Estadisticas", EstadisticasView.class, LineAwesomeIcon.PENCIL_RULER_SOLID.create()));
 
         return nav;
     }
