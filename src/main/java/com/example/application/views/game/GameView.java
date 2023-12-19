@@ -1,14 +1,11 @@
 package com.example.application.views.game;
 
+import com.example.application.TicTacToeGame;
 import com.example.application.views.MainLayout;
-import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.html.Hr;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -19,99 +16,173 @@ import com.vaadin.flow.theme.lumo.LumoUtility.Gap;
 
 @PageTitle("Game")
 @Route(value = "Game", layout = MainLayout.class)
-@Uses(Icon.class)
-public class GameView extends Composite<VerticalLayout> {
+public class GameView extends VerticalLayout {
+
+    private final TicTacToeGame ticTacToeGame = new TicTacToeGame();
+    private Button[][] cellButtons = new Button[3][3];
+    private TextField winnerTextField = new TextField("Ganador:");
 
     public GameView() {
-        HorizontalLayout layoutRow = new HorizontalLayout();
-        FormLayout formLayout2Col = new FormLayout();
-        TextField textField = new TextField();
-        TextField textField2 = new TextField();
-        HorizontalLayout layoutRow2 = new HorizontalLayout();
-        FormLayout formLayout3Col = new FormLayout();
-        Button buttonPrimary = new Button();
-        Button buttonPrimary2 = new Button();
-        Button buttonPrimary3 = new Button();
-        Button buttonPrimary4 = new Button();
-        Button buttonPrimary5 = new Button();
-        Button buttonPrimary6 = new Button();
-        Button buttonPrimary7 = new Button();
-        Button buttonPrimary8 = new Button();
-        Button buttonPrimary9 = new Button();
-        Hr hr = new Hr();
-        TextField textField3 = new TextField();
-        Button buttonPrimary10 = new Button();
-        getContent().setWidth("100%");
-        getContent().getStyle().set("flex-grow", "1");
-        layoutRow.setWidthFull();
-        getContent().setFlexGrow(1.0, layoutRow);
-        layoutRow.addClassName(Gap.MEDIUM);
-        layoutRow.setWidth("100%");
-        layoutRow.getStyle().set("flex-grow", "1");
-        formLayout2Col.setWidth("100%");
-        textField.setLabel("Turno X");
-        textField.setWidth("min-content");
-        textField2.setLabel("Turno de O");
-        textField2.setWidth("min-content");
-        layoutRow2.setWidthFull();
-        getContent().setFlexGrow(1.0, layoutRow2);
-        layoutRow2.addClassName(Gap.MEDIUM);
-        layoutRow2.setWidth("100%");
-        layoutRow2.getStyle().set("flex-grow", "1");
-        formLayout3Col.setWidth("100%");
-        formLayout3Col.setResponsiveSteps(new ResponsiveStep("0", 1), new ResponsiveStep("250px", 2),
-                new ResponsiveStep("500px", 3));
-        buttonPrimary.setText("Button");
-        buttonPrimary.setWidth("min-content");
-        buttonPrimary.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonPrimary2.setText("Button");
-        buttonPrimary2.setWidth("min-content");
-        buttonPrimary2.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonPrimary3.setText("Button");
-        buttonPrimary3.setWidth("min-content");
-        buttonPrimary3.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonPrimary4.setText("Button");
-        buttonPrimary4.setWidth("min-content");
-        buttonPrimary4.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonPrimary5.setText("Button");
-        buttonPrimary5.setWidth("min-content");
-        buttonPrimary5.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonPrimary6.setText("Button");
-        buttonPrimary6.setWidth("min-content");
-        buttonPrimary6.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonPrimary7.setText("Button");
-        buttonPrimary7.setWidth("min-content");
-        buttonPrimary7.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonPrimary8.setText("Button");
-        buttonPrimary8.setWidth("min-content");
-        buttonPrimary8.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonPrimary9.setText("Button");
-        buttonPrimary9.setWidth("min-content");
-        buttonPrimary9.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        textField3.setLabel("Ganador:");
-        getContent().setAlignSelf(FlexComponent.Alignment.CENTER, textField3);
-        textField3.setWidth("100%");
-        textField3.setHeight("57px");
-        buttonPrimary10.setText("Reiniciar");
-        buttonPrimary10.setWidth("min-content");
-        buttonPrimary10.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        getContent().add(layoutRow);
-        layoutRow.add(formLayout2Col);
-        formLayout2Col.add(textField);
-        formLayout2Col.add(textField2);
-        getContent().add(layoutRow2);
-        layoutRow2.add(formLayout3Col);
-        formLayout3Col.add(buttonPrimary);
-        formLayout3Col.add(buttonPrimary2);
-        formLayout3Col.add(buttonPrimary3);
-        formLayout3Col.add(buttonPrimary4);
-        formLayout3Col.add(buttonPrimary5);
-        formLayout3Col.add(buttonPrimary6);
-        formLayout3Col.add(buttonPrimary7);
-        formLayout3Col.add(buttonPrimary8);
-        formLayout3Col.add(buttonPrimary9);
-        getContent().add(hr);
-        getContent().add(textField3);
-        getContent().add(buttonPrimary10);
+        initializeGrid();
+        setupLayout();
     }
+
+    private void initializeGrid() {
+        VerticalLayout gridLayout = new VerticalLayout();
+        gridLayout.setWidth("min-content");
+        gridLayout.setAlignItems(Alignment.CENTER);
+
+        for (int row = 0; row < 3; row++) {
+            HorizontalLayout buttonRow = new HorizontalLayout();
+            buttonRow.setWidth("min-content");
+            for (int col = 0; col < 3; col++) {
+                Button cellButton = createCellButton(row, col);
+                cellButtons[row][col] = cellButton;
+                buttonRow.add(cellButton);
+            }
+            gridLayout.add(buttonRow);
+        }
+
+        add(new Hr());
+        add(gridLayout);
+        add(winnerTextField);
+    }
+
+
+
+    private VerticalLayout createGridSection(int start, int end) {
+        VerticalLayout section = new VerticalLayout();
+        section.setAlignItems(Alignment.CENTER);
+        section.setWidth("min-content");
+
+        for (int i = start; i < end; i++) {
+            HorizontalLayout buttonRow = new HorizontalLayout();
+            for (int j = 0; j < 3; j++) {
+                Button cellButton = createCellButton(i, j);
+                cellButtons[i][j] = cellButton;
+                buttonRow.add(cellButton);
+            }
+            section.add(buttonRow);
+        }
+
+        return section;
+    }
+
+
+
+    private Button createCellButton(int row, int col) {
+        Button button = new Button();
+        button.setWidth("min-content");
+        button.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        button.addClickListener(e -> handleCellButtonClick(row, col));
+        return button;
+    }
+
+    private void handleCellButtonClick(int row, int col) {
+        Button clickedButton = cellButtons[row][col];
+
+        // Verifica si la celda ya está ocupada
+        if (!clickedButton.getText().isEmpty()) {
+            // La celda ya está ocupada, puedes mostrar un mensaje o simplemente ignorar el clic.
+            return;
+        }
+
+        // Realiza la jugada en el modelo del juego
+        ticTacToeGame.makeMove(row, col);
+
+        // Obtén el símbolo del jugador actual (X o O)
+        String currentPlayerSymbol = ticTacToeGame.getCurrentPlayerSymbol();
+
+        // Establece el símbolo en la celda
+        clickedButton.setText(currentPlayerSymbol);
+
+        if (ticTacToeGame.isGameWon()) {
+            showWinner(currentPlayerSymbol);
+            // Puedes reiniciar el juego o realizar otras acciones después de que alguien gane.
+            return;
+        }
+
+        // Verifica si el juego está en empate
+        if (ticTacToeGame.isGameTie()) {
+            showTie();
+            // Puedes reiniciar el juego o realizar otras acciones después de un empate.
+            return;
+        }
+
+        // Cambia al siguiente jugador
+        ticTacToeGame.switchPlayer();
+    }
+
+    private void showWinner(String winnerSymbol) {
+        // Actualiza el TextField con el símbolo del ganador
+        winnerTextField.setValue("Ganador: " + winnerSymbol);
+
+        // Deshabilita todos los botones después de que alguien gane
+        disableCellButtons();
+    }
+
+    private void showTie() {
+        winnerTextField.setValue("¡Empate!");
+
+        // Deshabilita todos los botones después de un empate
+        disableCellButtons();
+    }
+
+    private void disableCellButtons() {
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                cellButtons[row][col].setEnabled(false);
+            }
+        }
+    }
+
+    private void setupLayout() {
+        setWidth("100%");
+        setAlignItems(Alignment.CENTER);
+
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.setWidthFull();
+        horizontalLayout.setAlignItems(Alignment.CENTER);
+
+        // Crea un componente vacío para hacer crecer flexiblemente el espacio a la izquierda
+        VerticalLayout leftSpace = new VerticalLayout();
+        leftSpace.setFlexGrow(1, leftSpace);
+        horizontalLayout.add(leftSpace);
+
+        // Agrega tu componente principal (formLayout3Col) al centro
+        FormLayout formLayout3Col = new FormLayout();
+        formLayout3Col.setWidth("100%");
+        horizontalLayout.add(formLayout3Col);
+
+        // Crea otro componente vacío para hacer crecer flexiblemente el espacio a la derecha
+        VerticalLayout rightSpace = new VerticalLayout();
+        rightSpace.setFlexGrow(1, rightSpace);
+        horizontalLayout.add(rightSpace);
+
+        // Agrega el botón de reinicio
+        Button restartButton = new Button("Reiniciar");
+        restartButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        restartButton.addClickListener(e -> restartGame());
+        horizontalLayout.add(restartButton);
+
+        add(horizontalLayout);
+    }
+
+
+    private void restartGame() {
+        // Restablecer el modelo del juego
+        ticTacToeGame.resetGame();
+
+        // Limpiar los textos en los botones
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                cellButtons[row][col].setText("");
+                cellButtons[row][col].setEnabled(true);
+            }
+        }
+
+        // Limpiar el TextField
+        winnerTextField.setValue("");
+    }
+
 }
