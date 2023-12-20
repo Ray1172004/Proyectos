@@ -18,32 +18,32 @@ public class MyMainView extends VerticalLayout {
         setAlignItems(Alignment.CENTER); // Alinea los elementos verticalmente en el centro
         setJustifyContentMode(JustifyContentMode.CENTER); // Centra los elementos horizontalmente
 
-        H2 title = new H2("Tic Tac Toe");
-        title.getStyle().set("margin-bottom", "20px");
+        H2 titulo = new H2("Tic Tac Toe");
+        titulo.getStyle().set("margin-bottom", "20px");
 
         VerticalLayout contentLayout = new VerticalLayout();
         contentLayout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         contentLayout.setSpacing(true);
 
-        Button chooseXButton = new Button("Jugar con X");
-        chooseXButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        chooseXButton.addClickListener(e -> startGameWithSymbol("O"));
+        Button escogerX = new Button("Jugar con X");
+        escogerX.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        escogerX.addClickListener(e -> empezarJuegoSimbolo("O"));
 
-        Button chooseOButton = new Button("Jugar con O");
-        chooseOButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        chooseOButton.addClickListener(e -> startGameWithSymbol("X"));
+        Button escogerO = new Button("Jugar con O");
+        escogerO.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        escogerO.addClickListener(e -> empezarJuegoSimbolo("X"));
 
-        contentLayout.add(chooseXButton, chooseOButton);
+        contentLayout.add(escogerX, escogerO);
 
         // Agrega el texto "Escoger jugador"
         contentLayout.add("Escoger jugador");
 
-        add(title, contentLayout);
+        add(titulo, contentLayout);
     }
 
-    private void startGameWithSymbol(String symbol) {
+    private void empezarJuegoSimbolo(String simbolo) {
         // Abre la vista del juego (GameView) con el símbolo seleccionado
-        getUI().ifPresent(ui -> ui.navigate(GameView.class, symbol));
+        getUI().ifPresent(ui -> ui.navigate(GameView.class, simbolo));
     }
 
 }

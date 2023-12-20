@@ -2,74 +2,71 @@ package com.example.application;
 
 public class TicTacToeGame {
 
-    private final String EMPTY_CELL = " ";
-    private String currentPlayer = "X"; // "X" starts first
-    private String[][] board = {
-            {EMPTY_CELL, EMPTY_CELL, EMPTY_CELL},
-            {EMPTY_CELL, EMPTY_CELL, EMPTY_CELL},
-            {EMPTY_CELL, EMPTY_CELL, EMPTY_CELL}
+    private final String ESPACIO_VACIO = " ";
+    private String jugadorActual = "X";
+    private String[][] tablero = {
+            {ESPACIO_VACIO, ESPACIO_VACIO, ESPACIO_VACIO},
+            {ESPACIO_VACIO, ESPACIO_VACIO, ESPACIO_VACIO},
+            {ESPACIO_VACIO, ESPACIO_VACIO, ESPACIO_VACIO}
     };
 
     // Nueva variable para almacenar el símbolo del jugador inicial
-    private String initialPlayerSymbol;
+    private String simboloJugadorPrincipio;
 
-    public String getCurrentPlayerSymbol() {
-        return currentPlayer;
+    public String getsimboloJugadorActual() {
+        return jugadorActual;
     }
 
     // Nuevo método para establecer el símbolo del jugador inicial
-    public void setInitialPlayerSymbol(String symbol) {
-        initialPlayerSymbol = symbol;
-        currentPlayer = symbol;  // Establece el primer jugador como el jugador inicial
+    public void setSimboloJugadorPrincipio(String simbolo) {
+        simboloJugadorPrincipio = simbolo;
+        jugadorActual = simbolo;  // Establece el primer jugador como el jugador inicial
     }
 
-    public void makeMove(int row, int col) {
+    public void hacerMovimiento(int fila, int colum) {
         // Verificar si la celda está vacía
-        if (board[row][col].equals(EMPTY_CELL)) {
+        if (tablero[fila][colum].equals(ESPACIO_VACIO)) {
             // Establecer el símbolo del jugador actual en la celda
-            board[row][col] = currentPlayer;
+            tablero[fila][colum] = jugadorActual;
 
             // Cambiar al otro jugador
-            currentPlayer = (currentPlayer.equals("X")) ? "O" : "X";
+            jugadorActual = (jugadorActual.equals("X")) ? "O" : "X";
         }
     }
 
-    public String getCellValue(int row, int col) {
-        return board[row][col];
-    }
 
-    public boolean isGameWon() {
+    public boolean ganaJuego() {
         // Verificar filas
-        for (int row = 0; row < 3; row++) {
-            if (checkRowCol(board[row][0], board[row][1], board[row][2])) {
+        for (int fila = 0; fila < 3; fila++) {
+            if (verificarFilasColum(tablero[fila][0], tablero[fila][1], tablero[fila][2])) {
                 return true;
             }
         }
 
         // Verificar columnas
-        for (int col = 0; col < 3; col++) {
-            if (checkRowCol(board[0][col], board[1][col], board[2][col])) {
+        for (int colum = 0; colum < 3; colum++) {
+            if (verificarFilasColum(tablero[0][colum], tablero[1][colum], tablero[2][colum])) {
                 return true;
             }
         }
 
         // Verificar diagonales
-        if (checkRowCol(board[0][0], board[1][1], board[2][2]) || checkRowCol(board[0][2], board[1][1], board[2][0])) {
+        if (verificarFilasColum(tablero[0][0], tablero[1][1], tablero[2][2]) || verificarFilasColum(tablero[0][2], tablero[1][1], tablero[2][0])) {
             return true;
         }
 
         return false;
     }
 
-    private boolean checkRowCol(String c1, String c2, String c3) {
-        return (!c1.equals(EMPTY_CELL) && c1.equals(c2) && c1.equals(c3));
+    private boolean verificarFilasColum(String p1, String p2, String p3) {
+        return (!p1.equals(ESPACIO_VACIO) && p1.equals(p2) && p1.equals(p3));
     }
 
-    public boolean isGameTie() {
+    public boolean empate() {
         // Verificar si todas las celdas están ocupadas
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                if (board[row][col].equals(EMPTY_CELL)) {
+        for (int fila = 0; fila < 3; fila++) {
+            for (int colum = 0; colum < 3; colum++) {
+                if (tablero[fila][colum].equals(ESPACIO_VACIO)) {
                     // Todavía hay al menos una celda vacía, el juego no está en empate
                     return false;
                 }
@@ -80,19 +77,19 @@ public class TicTacToeGame {
         return true;
     }
 
-    public void switchPlayer() {
-        currentPlayer = (currentPlayer.equals("O")) ? "O" : "X";
+    public void cambiarJugador() {
+        jugadorActual = (jugadorActual.equals("O")) ? "O" : "X";
     }
 
-    public void resetGame() {
+    public void reiniciarJuego() {
         // Reinicia el tablero
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                board[row][col] = EMPTY_CELL;
+        for (int fila = 0; fila < 3; fila++) {
+            for (int colum = 0; colum < 3; colum++) {
+                tablero[fila][colum] = ESPACIO_VACIO;
             }
         }
 
         // Reinicia el símbolo del jugador actual al símbolo del jugador inicial
-        currentPlayer = initialPlayerSymbol;
+        jugadorActual = simboloJugadorPrincipio;
     }
 }
