@@ -1,5 +1,9 @@
 package com.example.application;
-
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 public class TicTacToeGame {
 
     private final String ESPACIO_VACIO = " ";
@@ -12,7 +16,14 @@ public class TicTacToeGame {
 
     // Nueva variable para almacenar el símbolo del jugador inicial
     private String simboloJugadorPrincipio;
-
+    // Nueva variable para la colección en MongoDB
+    private MongoCollection<Document> collection;
+    public TicTacToeGame() {
+        // Configura la conexión a MongoDB
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:8080");
+        MongoDatabase database = mongoClient.getDatabase("tic_tac_toe_database");
+        this.collection = database.getCollection("tic_tac_toe_collection");
+    }
     public String getsimboloJugadorActual() {
         return jugadorActual;
     }
@@ -92,4 +103,7 @@ public class TicTacToeGame {
         // Reinicia el símbolo del jugador actual al símbolo del jugador inicial
         jugadorActual = simboloJugadorPrincipio;
     }
+
+
+
 }
